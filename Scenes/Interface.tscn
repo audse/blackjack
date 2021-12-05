@@ -1,0 +1,487 @@
+[gd_scene load_steps=27 format=2]
+
+[ext_resource path="res://Assets/Styles/HitButton_Normal.tres" type="StyleBox" id=1]
+[ext_resource path="res://Assets/Styles/HoldButton_Normal.tres" type="StyleBox" id=2]
+[ext_resource path="res://Scripts/Interface.gd" type="Script" id=3]
+[ext_resource path="res://Assets/Images/shadow_map_dark.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Images/star-white.png" type="Texture" id=5]
+[ext_resource path="res://Scenes/Score.tscn" type="PackedScene" id=6]
+
+[sub_resource type="DynamicFontData" id=6]
+font_path = "res://Assets/Fonts/Montserrat-ExtraBold.ttf"
+
+[sub_resource type="DynamicFont" id=2]
+size = 30
+use_mipmaps = true
+use_filter = true
+font_data = SubResource( 6 )
+
+[sub_resource type="StyleBoxFlat" id=8]
+bg_color = Color( 0.682353, 0.168627, 0.231373, 1 )
+border_width_right = 4
+border_width_bottom = 6
+border_color = Color( 0.537255, 0.054902, 0.113725, 1 )
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+shadow_color = Color( 0, 0, 0, 0.0980392 )
+shadow_size = 10
+shadow_offset = Vector2( 2, 2 )
+
+[sub_resource type="Animation" id=13]
+resource_name = "HoverEnd"
+length = 0.5
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:rect_scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.25 ),
+"transitions": PoolRealArray( 2.63902, 1 ),
+"update": 0,
+"values": [ Vector2( 1.025, 1.025 ), Vector2( 1, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:rect_rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.1, 0.25 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ 0.0, 0.3, 0.0 ]
+}
+
+[sub_resource type="Animation" id=9]
+resource_name = "HoverStart"
+length = 0.25
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:rect_scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.25 ),
+"transitions": PoolRealArray( 1, 2.63902 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 1.025, 1.025 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:rect_rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.15, 0.25 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ 0.0, -0.3, 0.0 ]
+}
+
+[sub_resource type="Animation" id=10]
+resource_name = "RESET"
+length = 0.01
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:rect_scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:rect_rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.0 ]
+}
+
+[sub_resource type="StyleBoxFlat" id=7]
+bg_color = Color( 0.0745098, 0.376471, 0.309804, 1 )
+border_width_right = 4
+border_width_bottom = 6
+border_color = Color( 0.054902, 0.313726, 0.254902, 1 )
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+shadow_color = Color( 0, 0, 0, 0.0980392 )
+shadow_size = 10
+shadow_offset = Vector2( 2, 2 )
+
+[sub_resource type="Animation" id=14]
+resource_name = "HoverEnd"
+length = 0.5
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:rect_scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.25 ),
+"transitions": PoolRealArray( 2.63902, 1 ),
+"update": 0,
+"values": [ Vector2( 1.025, 1.025 ), Vector2( 1, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:rect_rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.1, 0.25 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ 0.0, 0.3, 0.0 ]
+}
+
+[sub_resource type="Animation" id=11]
+resource_name = "HoverStart"
+length = 0.25
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:rect_scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.25 ),
+"transitions": PoolRealArray( 1, 2.63902 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 1.025, 1.025 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:rect_rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.15, 0.25 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ 0.0, -0.3, 0.0 ]
+}
+
+[sub_resource type="Animation" id=12]
+resource_name = "RESET"
+length = 0.01
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:rect_scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:rect_rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.0 ]
+}
+
+[sub_resource type="Gradient" id=34]
+offsets = PoolRealArray( 0.294253, 0.682759, 1 )
+colors = PoolColorArray( 1, 0.94902, 0.831373, 0, 1, 0.952941, 0.807843, 1, 1, 1, 1, 0 )
+
+[sub_resource type="GradientTexture" id=35]
+gradient = SubResource( 34 )
+
+[sub_resource type="ParticlesMaterial" id=36]
+emission_ring_axis = Vector3( 1, 1, 1 )
+flag_disable_z = true
+direction = Vector3( 1, 1, 1 )
+spread = 180.0
+gravity = Vector3( 0, 10, 0 )
+initial_velocity = 400.0
+angular_velocity = 180.0
+angular_velocity_random = 1.0
+orbit_velocity = 0.1
+orbit_velocity_random = 0.1
+damping = 200.0
+scale = 0.02
+scale_random = 0.2
+color = Color( 1, 0.929412, 0.682353, 1 )
+color_ramp = SubResource( 35 )
+hue_variation = 0.05
+hue_variation_random = 0.2
+
+[sub_resource type="DynamicFontData" id=27]
+font_path = "res://Assets/Fonts/Montserrat-Black.ttf"
+
+[sub_resource type="DynamicFont" id=28]
+size = 50
+use_mipmaps = true
+use_filter = true
+font_data = SubResource( 27 )
+
+[sub_resource type="DynamicFont" id=29]
+size = 110
+use_mipmaps = true
+use_filter = true
+font_data = SubResource( 27 )
+
+[sub_resource type="Animation" id=30]
+resource_name = "RESET"
+length = 0.01
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:rect_scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:rect_rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.0 ]
+}
+
+[sub_resource type="Animation" id=31]
+resource_name = "Show"
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:rect_scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0.2, 0.6, 0.9 ),
+"transitions": PoolRealArray( 3.4822, 0.435275, 0.307786 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 1.25, 1.25 ), Vector2( 1, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:rect_rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.3, 0.7, 1 ),
+"transitions": PoolRealArray( 2.82843, 0.307786, 1 ),
+"update": 0,
+"values": [ -50.0, 10.0, 0.0 ]
+}
+
+[sub_resource type="Animation" id=32]
+resource_name = "RESET"
+length = 0.01
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:rect_scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 1e-05, 1e-05 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:rect_rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ -50.0 ]
+}
+
+[sub_resource type="Animation" id=33]
+resource_name = "Show"
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:rect_scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.4, 0.7 ),
+"transitions": PoolRealArray( 3.4822, 0.435275, 0.307786 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 1.25, 1.25 ), Vector2( 1, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:rect_rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.5, 0.8 ),
+"transitions": PoolRealArray( 2.82843, 0.307786, 1 ),
+"update": 0,
+"values": [ -50.0, 10.0, 0.0 ]
+}
+
+[node name="Interface" type="Node2D"]
+script = ExtResource( 3 )
+
+[node name="DarkOverlay" type="Node2D" parent="."]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( -256, 0 )
+scale = Vector2( 0.75, 0.5 )
+z_index = 10
+
+[node name="TextureRect" type="TextureRect" parent="DarkOverlay"]
+light_mask = 0
+margin_left = -40.0
+margin_top = -20.0
+margin_right = 4227.0
+margin_bottom = 2480.0
+rect_scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HitButton" type="Button" parent="."]
+margin_left = 800.0
+margin_top = 405.0
+margin_right = 950.0
+margin_bottom = 465.0
+rect_pivot_offset = Vector2( 75, 30 )
+focus_mode = 0
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_fonts/font = SubResource( 2 )
+custom_styles/hover = ExtResource( 1 )
+custom_styles/pressed = SubResource( 8 )
+custom_styles/focus = ExtResource( 1 )
+custom_styles/disabled = ExtResource( 1 )
+custom_styles/normal = ExtResource( 1 )
+enabled_focus_mode = 0
+text = "HIT!"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="HitButton"]
+anims/HoverEnd = SubResource( 13 )
+anims/HoverStart = SubResource( 9 )
+anims/RESET = SubResource( 10 )
+
+[node name="HoldButton" type="Button" parent="."]
+margin_left = 800.0
+margin_top = 485.0
+margin_right = 950.0
+margin_bottom = 545.0
+rect_pivot_offset = Vector2( 75, 30 )
+focus_mode = 0
+custom_colors/font_color = Color( 1, 1, 1, 0.784314 )
+custom_fonts/font = SubResource( 2 )
+custom_styles/hover = ExtResource( 2 )
+custom_styles/pressed = SubResource( 7 )
+custom_styles/focus = ExtResource( 2 )
+custom_styles/disabled = ExtResource( 2 )
+custom_styles/normal = ExtResource( 2 )
+enabled_focus_mode = 0
+text = "STAND"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="HoldButton"]
+anims/HoverEnd = SubResource( 14 )
+anims/HoverStart = SubResource( 11 )
+anims/RESET = SubResource( 12 )
+
+[node name="Score" parent="." instance=ExtResource( 6 )]
+position = Vector2( 810, 50 )
+
+[node name="Particles2D" type="Particles2D" parent="."]
+position = Vector2( 512, 300 )
+emitting = false
+amount = 15
+lifetime = 1.5
+one_shot = true
+explosiveness = 0.75
+process_material = SubResource( 36 )
+texture = ExtResource( 5 )
+
+[node name="GameOverMessage" type="Label" parent="."]
+self_modulate = Color( 1, 1, 1, 0.588235 )
+margin_top = 170.0
+margin_right = 1024.0
+margin_bottom = 270.0
+rect_rotation = -50.0
+rect_scale = Vector2( 1e-05, 1e-05 )
+rect_pivot_offset = Vector2( 512, 100 )
+custom_fonts/font = SubResource( 28 )
+text = "GAME OVER!"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Winner" type="Label" parent="GameOverMessage"]
+margin_top = 60.0
+margin_right = 1024.0
+margin_bottom = 208.0
+rect_scale = Vector2( 1e-05, 1e-05 )
+rect_pivot_offset = Vector2( 512, 0 )
+custom_fonts/font = SubResource( 29 )
+text = "IT'S A TIE!"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="GameOverMessage/Winner"]
+anims/RESET = SubResource( 30 )
+anims/Show = SubResource( 31 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="GameOverMessage"]
+anims/RESET = SubResource( 32 )
+anims/Show = SubResource( 33 )
