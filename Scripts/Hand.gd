@@ -2,8 +2,9 @@ extends Node2D
 
 class_name Hand
 var Card = preload("res://Scenes/Card.tscn")
-
+var _connect
 signal _hand_reveal_finished
+signal _discard_hand_finished
 
 var cards:Array = []
 
@@ -15,14 +16,13 @@ var margin:Vector2 = Vector2()
 
 var total = 0
 
+var hide_score = true
+
 func _ready():
 	pass 
 
-func get_hand_value(partial_hand=null):
+func get_hand_value(partial_hand=cards):
 	var hand = partial_hand
-	# If no hand provided, just use all cards
-	if not partial_hand:
-		hand = cards
 		
 	var value = 0
 	var num_aces = 0
@@ -39,54 +39,84 @@ func get_hand_value(partial_hand=null):
 			value += 1
 	return value
 
-func reveal_hand():
+func reveal_hand(quick=false):
+	$Timer.start()
+	
 	# Show score box
-	$Score.connect("_on_animation_finished", self, "_reveal_hand_animation_finished")
+	$Score.modulate_alpha(1)
 	$Score.play("Enter")
 	
-	for card in cards:
-		card.connect("_on_animation_finished", self, "_reveal_hand_animation_finished")
-
-func _reveal_hand_animation_finished(node, anim_name):
-	
-	# After the hand's score box appears
-	if node == $Score and anim_name == "Enter":
-		print("score enter finished")
-		if len(cards) > 0:
-			# Flip the first card
-			$Score.target_score = str(get_hand_value([cards[0]]))
-			cards[0].play("Flip")
-	
-	# After flipping a card
-	elif node in cards and (anim_name == "Flip" or anim_name == "FlipInPlace"):
-		var card_index = cards.find(node)
+	if not quick:
+		# Show cards 1-by-1
+		$Timer.wait_time = 0.75
+		_connect = $Timer.connect("timeout", self, "_reveal_card", [cards[0]])
 		
-		# Update the score
-		if card_index != -1 and card_index < (len(cards) - 1):
-			var next_card = cards[card_index + 1]
-			
-			var current_hand_value = get_hand_value(cards.slice(0, card_index + 1))
-			$Score.target_score = str(current_hand_value)
-			
-			# Flip the next card
-			if next_card.face_up:
-				next_card.play("FlipInPlace")
+	else:
+		# Show all cards
+		for card in cards:
+			if card.face_up:
+				card.play("FlipInPlace")
 			else:
-				next_card.play("Flip")
-		
-		# If all cards are flipped, update to the final score
-		elif card_index == (len(cards) - 1):
-			$Score.target_score = str(get_hand_value())
+				card.play("Flip")
+		# Update score
+		$Score.target_score = str(get_hand_value())
+		_connect = $Score.connect("_on_animation_finished", self, "_hand_reveal_finished", [true])
+
+func _reveal_card(card):
+	$Timer.disconnect("timeout", self, "_reveal_card")
 	
-	# After updating the score for the final time
-	elif node == $Score and anim_name == "Update" and $Score.score == str(get_hand_value()):
-		emit_signal("_hand_reveal_finished")
+	# Flip next card (if there is one)
+	var card_index = cards.find(card)
+	if len(cards) > card_index + 1:
+		var new_card = cards[card_index + 1]
+		_connect = $Timer.connect("timeout", self, "_reveal_card", [new_card])
+	# If not, the reveal is finished
+	else:
+		_connect = $Score.connect("_on_animation_finished", self, "_hand_reveal_finished", [false])
+	
+	# Update score
+	var partial_hand = cards.slice(0, card_index)
+	$Score.target_score = str(get_hand_value(partial_hand))
+	if card.face_up:
+		card.play("FlipInPlace")
+	else:
+		card.play("Flip")
+
+func _hand_reveal_finished(_node=null, _anim_name=null, _quick_reveal=false):
+	$Score.disconnect("_on_animation_finished", self, "_hand_reveal_finished")
+	
+	$Timer.wait_time = 1
+	_connect = $Timer.connect("timeout", self, "_hand_revealed")
+
+func _hand_revealed():
+	$Score.modulate_alpha(0)
+	emit_signal("_hand_reveal_finished")
+	$Timer.disconnect("timeout", self, "_hand_revealed")
+
+func discard_hand():
+	hide_score = true
+	for card in cards:
+		_connect = card.connect("_on_animation_finished", self, "_discard_flip_finished")
+		card.play("FlipDown")
+
+func _discard_flip_finished(node, anim_name):
+	if node in cards and anim_name == "FlipDown":
+		var target_position = node.global_position
+		target_position.x = -100
+		node.move(target_position, 0.5)
+	elif node in cards and anim_name == "Translate":
+		cards.erase(node)
+		node.queue_free()
+		emit_signal("_discard_hand_finished")
 
 func add_card(card:Card, current_position:Vector2, flip=true):
 	cards.append(card)
 	card.position = current_position
-	card.target_position = calculate_card_position()
+#	card.target_position = calculate_card_position()
 	add_child(card)
+	var target_position = calculate_card_position()
+	card.move(target_position)
+	
 	total = get_hand_value()
 	
 	if (flip):
@@ -134,3 +164,4 @@ func calculate_card_position():
 	position_y += margin.y
 	
 	return Vector2(position_x, position_y)
+

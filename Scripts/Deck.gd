@@ -2,6 +2,7 @@ extends Node2D
 
 var Card = preload("res://Scenes/Card.tscn")
 var rand = RandomNumberGenerator.new()
+var _connect
 
 signal _on_deck_landed
 
@@ -13,7 +14,7 @@ func _init():
 	deck.shuffle()
 
 func _ready():
-	$Timer.connect("timeout", self, "animate_deck_graphic")
+	_connect = $Timer.connect("timeout", self, "animate_deck_graphic")
 	$Timer.start()
 
 func get_top_card():
@@ -71,28 +72,30 @@ func add_deck_graphic():
 func animate_deck_graphic():
 	$Timer.disconnect("timeout", self, "animate_deck_graphic")
 	
+	var deck_length = len(deck)
+	
 	var i:int = 0
 	for card in deck:
-		card.speed_factor = 200 - (3*i)
-		card.position = Vector2(
-				0, 
-				-(Globals.HEIGHT * 3) - (Globals.NUM_DECKS * 51) - (500 * i)
-			)
-		
-		card.target_position = to_global(Vector2(
-				0,
-				(Globals.NUM_DECKS * 51)
-			))
-		card.target_position.y -= i
-		
+		card.position.x = 0
+		card.position.y = -(Globals.HEIGHT) - (Globals.CARD_HEIGHT * i * 2)
+
 		rand.randomize()
-		card.target_position.x += rand.randf_range(-5, 5)
-		card.target_position.y += rand.randf_range(-2, 2)
+		
+		var target_position = to_global(Vector2(
+				0,
+				deck_length
+			))
+		target_position.y -= i
+		target_position.x += rand.randf_range(-5, 5)
+		target_position.y += rand.randf_range(-2, 2)
+		
+		var animation_time = 0.25 + (0.025 * i)
 		
 		add_child(card)
+		card.move(target_position, animation_time, Tween.EASE_OUT)
 		
 		if i == 51:
-			card.connect("_on_animation_finished", self, "_on_deck_landed")
+			_connect = card.connect("_on_animation_finished", self, "_on_deck_landed")
 		i += 1
 
 func _on_deck_landed(node, anim_name):

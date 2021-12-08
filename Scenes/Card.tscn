@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://Scripts/Card.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Images/star-white.png" type="Texture" id=2]
@@ -94,6 +94,71 @@ tracks/1/keys = {
 "transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 1,
 "values": [ true, true, false, false ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Sheet:custom_styles/panel:shadow_color")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.29, 0.55 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 0, 0, 0, 0.0588235 ), Color( 0, 0, 0, 0.0980392 ), Color( 0, 0, 0, 0.0980392 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Sheet:custom_styles/panel:shadow_size")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.55, 1.5 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ 2, 8, 8 ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("Sheet:custom_styles/panel:shadow_offset")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0, 0.55, 1.5 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 3, 1 ), Vector2( -4, 1 ), Vector2( -4, 1 ) ]
+}
+
+[sub_resource type="Animation" id=21]
+resource_name = "FlipDown"
+length = 1.5
+step = 0.01
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.27, 0.33, 0.66, 1.2, 1.5 ),
+"transitions": PoolRealArray( 0.267943, 0.466516, 3.4822, 0.267943, 0.176777, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 1.25, 1.25 ), Vector2( 1.25, 1.25 ), Vector2( 0.05, 1 ), Vector2( 1, 1 ), Vector2( 1, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Back:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.65, 0.67, 1.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ false, false, true, true ]
 }
 tracks/2/type = "value"
 tracks/2/path = NodePath("Sheet:custom_styles/panel:shadow_color")
@@ -481,10 +546,15 @@ __meta__ = {
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/Flip = SubResource( 6 )
+anims/FlipDown = SubResource( 21 )
 anims/FlipInPlace = SubResource( 20 )
 anims/Move = SubResource( 13 )
 anims/RESET = SubResource( 9 )
 "anims/RESET (Flipped)" = SubResource( 12 )
 
+[node name="Tween" type="Tween" parent="."]
+
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_finished"]
 [connection signal="animation_started" from="AnimationPlayer" to="." method="_on_animation_started"]
+[connection signal="tween_completed" from="Tween" to="." method="_on_tween_completed"]
+[connection signal="tween_started" from="Tween" to="." method="_on_tween_started"]
